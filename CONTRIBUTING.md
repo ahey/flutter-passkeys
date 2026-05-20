@@ -59,14 +59,6 @@ It works the same for passkeys_ios
   dart run pigeon --input pigeons/messages.dart 
 ```
 
-### Making Changes to the Web Javascript Code
-
-If you're making changes to the web package, you'll need to run the following command to build the javascript code and import it in to the example
-
-```bash
-  melos build-passkeys-web-javascript
-```
-
 ## 5. Running the Example
 
 To run the example, we can use the following commands: 

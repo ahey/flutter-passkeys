@@ -76,13 +76,6 @@ melos:
         cd packages/passkeys/passkeys/example
         bash tool/run_integration_tests.sh true
 
-    build-passkeys-web-javascript:
-      description: Build passkeys_web's javascript code and copy it to the example.
-      run: |
-        cd packages/passkeys/passkeys_web/javascript
-        npm run build
-        cp dist/bundle.js ../../passkeys/example/web/bundle.js
-
     generate-corbado-api-client:
       description: Regenerate the Corbado frontend API client. openapi_generator pins analyzer <9 so it cannot live in the workspace; this resolves corbado_api_client in an isolated copy with the build tool, then copies the generated client back.
       run: |

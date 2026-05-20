@@ -25,7 +25,7 @@ Melos monorepo on [pub workspaces](https://dart.dev/tools/pub/workspaces). `melo
 ## Key workflows
 
 - **Native code changes**: regenerate Pigeon — `cd packages/passkeys/passkeys_android && dart run pigeon --input pigeons/messages.dart`
-- **Web JS changes**: `melos run build-passkeys-web-javascript` (builds TS, copies bundle to example)
+- **Web**: pure Dart via `dart:js_interop`; no JavaScript bundle to build (since `passkeys_web` > 2.10.0)
 - **Corbado API client changes**: `melos run generate-corbado-api-client`. `openapi_generator` pins `analyzer <9` and can't join the workspace, so the script regenerates `corbado_api_client/lib/frontendapi` in an isolated copy with the build tool and copies the result back (requires Java for the OpenAPI generator).
 - **Before committing**: `melos format --set-exit-if-changed && melos analyze --fatal-infos` (built-in Melos commands; `melos test` runs the suites)
 - **PR titles**: Conventional Commits, e.g. `fix(passkeys_android): fixed a bug!`

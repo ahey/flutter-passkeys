@@ -426,21 +426,28 @@ On a simulator, this can be done under _Features_ => _Face ID_ by clicking on "E
 
 ### Web
 
-<details>
-<summary>1. Update your index.html to include our JavaScript library</summary>
-Our passkeys_web package relies on JavaScript for integrating with the browser's WebAuthn API.
-To make this work, you have to include our JavaScript library in your web/index.html file. If not correctly integrated the PasskeyAuthenticator would not correctly initialize and the application would crash and an exception asking to add the code below will show in your console.
+Since `passkeys_web` > 2.10.0 the web implementation is pure Dart, calling
+the browser's WebAuthn API directly via `dart:js_interop`. No JavaScript
+bundle is required in your `web/index.html` — remove any
+`<script src=".../bundle.js">` tag left over from earlier versions.
 
-```html
-<script
-  src="https://github.com/corbado/flutter-passkeys/releases/download/2.4.0/bundle.js"
-  type="application/javascript"
-></script>
-```
+The WebAuthn JSON conversions are done by the plugin itself rather than
+with the browser's `PublicKeyCredential.parseCreationOptionsFromJSON` /
+`parseRequestOptionsFromJSON` / `toJSON()` helpers. Those helpers only
+exist in Chrome/Edge 129+, Safari 18.4+ and Firefox 119+, and `toJSON()`
+drops or corrupts PRF results on many current browser versions
+(Chrome < 152, Firefox < 139, Safari ≤ 26.2); converting in Dart keeps
+every WebAuthn-capable browser supported on a single code path.
 
-You can also take a look at this package's example to see how it is done there.
+#### Browser support
 
-</details>
+Passkeys work in any browser with WebAuthn support. In a browser without
+WebAuthn, `getAvailability()` reports `hasPasskeySupport: false`, and
+`register()` / `authenticate()` throw `DeviceNotSupportedException`.
+
+Using the PRF extension requires a browser and authenticator that
+support it: Chrome / Edge 116+, Safari 18+ (iCloud Keychain),
+Firefox 135+ (139+ on macOS). It is not supported in Android WebView.
 
 #### Requirements
 
